@@ -20,8 +20,13 @@ URL=$(zenity --entry --text="App URL" --title="Create Nativefier App")
 echo $URL
 NAME=$(zenity --entry --text="App Name" --title="Create Nativefier App")
 echo $NAME
-LOCATION=$(npx -y nativefier --name "$NAME" "$URL"  ~/.nativefier | grep -Po "(?<=App built to ).*(?=,)" )
-EXEC=$(echo $LOCATION | grep -Po "[^\/]*(?=-[a-z0-9]+-[a-z0-9]+)")
+
+NATIVEFIER_OUTPUT=$(npx -y nativefier --name "$NAME" "$URL"  ~/.nativefier | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Creating nativefier app..."))
+
+LOCATION=$(echo "$NATIVEFIER_OUTPUT" | grep -Po "(?<=App built to ).*(?=,)" )
+
+
+EXEC=$(echo "$LOCATION" | grep -Po "[^\/]*(?=-[a-z0-9]+-[a-z0-9]+)")
  #~/.local/share/applications
 cat << EOF > ~/.local/share/applications/$EXEC.desktop
 [Desktop Entry]

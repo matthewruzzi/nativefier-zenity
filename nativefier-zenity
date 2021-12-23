@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+URL=$(zenity --entry --text="App URL" --title="Create Nativefier App")
+echo $URL
+NAME=$(zenity --entry --text="App Name" --title="Create Nativefier App")
+echo $NAME
+LOCATION=$(npx -y nativefier --name "$NAME" "$URL"  ~/.nativefier | grep -Po "(?<=App built to ).*(?=,)" )
+EXEC=$(echo $LOCATION | grep -Po "[^\/]*(?=-[a-z0-9]+-[a-z0-9]+)")
+ #~/.local/share/applications
+cat << EOF > ~/.local/share/applications/$EXEC.desktop
+[Desktop Entry]
+
+# The type as listed above
+Type=Application
+
+# The version of the desktop entry specification to which this file complies
+Version=1.0
+
+# The name of the application
+Name=$NAME
+
+# The executable of the application, possibly with arguments.
+Exec=$LOCATION/$EXEC
+EOF

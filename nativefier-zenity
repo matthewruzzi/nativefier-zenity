@@ -2,6 +2,20 @@
 
 set -Eeuo pipefail
 
+# Check that npx is installed
+if ! command -v npx &> /dev/null; then
+    echo "npx could not be found."
+    echo "nativefier-zenity requires nodejs and npm/npx be availible to use nativefier."
+    exit 1
+fi
+
+# Check that zenity is installed
+if ! command -v zenity &> /dev/null; then
+    echo "zenity could not be found."
+    echo "nativefier-zenity requires zenity be availible to show dialogs."
+    exit 1
+fi
+
 URL=$(zenity --entry --text="App URL" --title="Create Nativefier App")
 echo $URL
 NAME=$(zenity --entry --text="App Name" --title="Create Nativefier App")

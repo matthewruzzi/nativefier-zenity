@@ -1,0 +1,13 @@
+[Desktop Entry]
+
+# The type as listed above
+Type=Application
+
+# The version of the desktop entry specification to which this file complies
+Version=1.0
+
+# The name of the application
+Name=Nativefier
+
+# The executable of the application, possibly with arguments.
+Exec=nativefier-zenity
